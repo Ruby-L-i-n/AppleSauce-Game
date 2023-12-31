@@ -16,15 +16,15 @@ test_font = pygame.font.Font('fonts/SadMorningDemoRegular.ttf', 50)
 clock = pygame.time.Clock()
 
 #test
-sky_surface = pygame.image.load('graphics/sky.jpg')
+sky_surface = pygame.image.load('graphics/sky.jpg').convert()
 sky_surface = pygame.transform.scale(sky_surface, (800, 400))
 
-road_surface = pygame.image.load('graphics/road.png')
+road_surface = pygame.image.load('graphics/road.png').convert()
 road_surface = pygame.transform.scale(road_surface, (800, 60))
 
 text_surface = test_font.render('Applesauce Run', False, 'White')
 
-cat_surface = pygame.image.load('graphics/Cat.png')
+cat_surface = pygame.image.load('graphics/Cat.png').convert_alpha()
 cat_surface = pygame.transform.scale(cat_surface, (80, 100))
 cat_x_position = 800
 
