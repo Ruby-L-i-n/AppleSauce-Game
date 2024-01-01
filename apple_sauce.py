@@ -25,9 +25,12 @@ road_surface = pygame.transform.scale(road_surface, (800, 60))
 text_surface = test_font.render('Applesauce Run', False, 'White')
 
 cat_surface = pygame.image.load('graphics/Cat.png').convert_alpha()
-cat_surface = pygame.transform.scale(cat_surface, (80, 100))
-cat_x_position = 800
+cat_surface = pygame.transform.scale(cat_surface, (80, 60))
+cat_rect = cat_surface.get_rect(midbottom = (800, 340))
 
+player_surface = pygame.image.load('graphics/Jason/no_anim_0.png').convert_alpha()
+player_surface = pygame.transform.scale(player_surface, (60, 80))
+player_rect = player_surface.get_rect(midbottom = (100, 340))
 
 while True: 
     #everything here
@@ -42,10 +45,14 @@ while True:
     screen.blit(road_surface, (0,340))
     screen.blit(text_surface, (250,50))
 
-    cat_x_position -= 4
-    if cat_x_position < -10: cat_x_position = 800
+    cat_rect.left -= 4
+    if cat_rect.right < -10: cat_rect.left = 800
+    screen.blit(cat_surface, cat_rect)
+    screen.blit(player_surface, player_rect)
 
-    screen.blit(cat_surface, (cat_x_position, 300))
+    if player_rect.colliderect(cat_rect) : 
+        print("ahh")
+        cat_rect.left = 800
 
     #update everything
     pygame.display.update()
