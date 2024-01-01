@@ -15,6 +15,8 @@ test_font = pygame.font.Font('fonts/SadMorningDemoRegular.ttf', 50)
 #create a clock object 
 clock = pygame.time.Clock()
 
+game_active = True
+
 #test
 sky_surf = pygame.image.load('graphics/sky.jpg').convert()
 sky_surf = pygame.transform.scale(sky_surf, (800, 400))
@@ -41,36 +43,43 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
+        if game_active: 
+            if event.type == pygame.MOUSEBUTTONDOWN: 
+                if player_rect.bottom == 340:
+                    player_grav = -15
 
-        if event.type == pygame.MOUSEBUTTONDOWN: 
-            if player_rect.bottom == 340:
-                player_grav = -15
+            if event.type == pygame.KEYDOWN: 
+                if event.key == pygame.K_SPACE and player_rect.bottom == 340: 
+                    player_grav = -15
+        else: 
+            if event.type == pygame.KEYDOWN: 
+                if event.key == pygame.K_r: 
+                    cat_rect.left = 800
+                    game_active = True
 
-        if event.type == pygame.KEYDOWN: 
-            if event.key == pygame.K_SPACE and player_rect.bottom == 340: 
-                player_grav = -15
 
+    if game_active: 
+        #background
+        screen.blit(sky_surf, (0,0))
+        screen.blit(road_surf, (0,340))
+        screen.blit(text_surf, (250,50))
 
-    #background
-    screen.blit(sky_surf, (0,0))
-    screen.blit(road_surf, (0,340))
-    screen.blit(text_surf, (250,50))
+        #Cat
+        cat_rect.left -= 4
+        if cat_rect.right < -10: cat_rect.left = 800
+        screen.blit(cat_surf, cat_rect)
 
-    #check collision 
-    if player_rect.colliderect(cat_rect) : 
-        print("ahh")
-        cat_rect.left = 800
+        #Player
+        player_grav += 0.5
+        player_rect.y += player_grav
+        if player_rect.bottom >= 340: player_rect.bottom = 340
+        screen.blit(player_surf, player_rect)
 
-    #Cat
-    cat_rect.left -= 4
-    if cat_rect.right < -10: cat_rect.left = 800
-    screen.blit(cat_surf, cat_rect)
-
-    #Player
-    player_grav += 0.5
-    player_rect.y += player_grav
-    if player_rect.bottom >= 340: player_rect.bottom = 340
-    screen.blit(player_surf, player_rect)
+        #check collision 
+        if player_rect.colliderect(cat_rect): 
+            game_active = False
+    else: 
+        screen.fill('Red')
 
     #update everything
     pygame.display.update()
